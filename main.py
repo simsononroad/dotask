@@ -2,10 +2,11 @@ from docx.shared import Mm
 from docxtpl import DocxTemplate, InlineImage
 
 class Create_task():
-    def __init__(self, file_name, file_desc, kerdes_valasz: list):
+    def __init__(self, file_name, file_desc, kerdes_valasz: list, feladatsor_neve):
        self.file_name = file_name
        self.file_desc = file_desc
        self.kerdes_valasz = list(kerdes_valasz)
+       self.feladatsor_neve = feladatsor_neve
     def chose(self):
         
         a = input("(Ú)j kérdés, (G)enerálás, (K)ilépés")
@@ -24,6 +25,7 @@ class Create_task():
             for key,value in dict(feladatok).items():
                 rossz_valaszok = value[0][0]
                 helyes_valaszok = value[1][0]
+                feladatsor_neve = self.feladatsor_neve
                 print(f"{key}:")
                 
                 
@@ -48,8 +50,9 @@ class Create_task():
 
 def main():
     a = input("Mi legyen a file neve?: ")
-    b = input("Mi legyen a leírása?: ")
-    Create_task(file_name=a, file_desc=b, kerdes_valasz={}).chose()
+    b = input("Mi legyen a feladatsor neve?: ")
+    c = input("Mi legyen a feladatsor leírása?: ")
+    Create_task(file_name=a, file_desc=c, kerdes_valasz=[], feladatsor_neve=b).chose()
    
 
 if __name__  == '__main__':
