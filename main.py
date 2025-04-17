@@ -12,7 +12,7 @@ class Create_task():
        self.egybe = dict(egybe)
     def chose(self):
         
-        a = input("(Ú)j kérdés, (G)enerálás, (K)ilépés")
+        a = input("(Ú)j kérdés, (G)enerálás, (K)ilépés\n>>>")
         print()
         if a.upper() == 'Ú':
             Create_task(self.file_name, self.file_desc, self.kerdes_valasz, self.feladatsor_neve, egybe=self.egybe).new_task()
