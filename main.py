@@ -18,12 +18,12 @@ class Create_task():
         elif a.upper() == 'G':
             Create_task(self.file_name, self.file_desc, self.kerdes_valasz, self.feladatsor_neve).gen_file()
         else:exit()
-    
+    egybe = []
     def gen_file(self):
         
         
         print(f"==================\n\tFájl neve: {self.file_name}\n\tFájl leírása: {self.file_desc}\n==================\n")
-        
+        print(egybe)
         doc = DocxTemplate('base.docx')
         context = {
             'feladat_neve': self.feladatsor_neve,
@@ -33,18 +33,31 @@ class Create_task():
         }
         doc.render(context)
         doc.save(self.file_name)
-        docx_2_pdf(self.file_name, "output.pdf")
+        docx_2_pdf(self.file_name, "megoldokulcs.pdf")
+        doc1 = DocxTemplate('base_feladat.docx')
+        context = {
+            'feladat_neve': self.feladatsor_neve,
+            'feladatsor_leirasa': self.file_desc,
+            'feladat_szam': 0,
+            'kerdes_valasz': egybe
+        }
+        doc1.render(context)
+        doc1.save(self.file_name)
+        docx_2_pdf(self.file_name, "feladatsor.pdf")
                 
     def new_task(self):
+        global egybe
         kerdes = input("Mi legyen a kérdés?\n>>>")
         valasz_lehetosegek = input("válasz lehetőségek vesszővel elválasztva a helyes válasz után tegyél egy '$' jelet.\npl: egy, ketto$, harom\n>>>")
         valasz_lehetosegek_lista = valasz_lehetosegek.split(",")
         helyes_valasz_lista = []
-        
+        egybe = valasz_lehetosegek.split(",")
         for lehetoseg in valasz_lehetosegek_lista:
             if lehetoseg[-1] == "$":
                 helyes_valasz_lista.append(lehetoseg[:-1])
                 valasz_lehetosegek_lista.remove(lehetoseg)
+        
+        print(egybe)
         print(valasz_lehetosegek_lista)
         print(helyes_valasz_lista)
         self.kerdes_valasz.append({kerdes: [[valasz_lehetosegek_lista], [helyes_valasz_lista]]})
