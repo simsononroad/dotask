@@ -9,7 +9,7 @@ class Create_task():
        self.file_desc = file_desc
        self.kerdes_valasz = list(kerdes_valasz)
        self.feladatsor_neve = feladatsor_neve
-       self.egybe = list(egybe)
+       self.egybe = dict(egybe)
     def chose(self):
         
         a = input("(Ú)j kérdés, (G)enerálás, (K)ilépés")
@@ -49,14 +49,25 @@ class Create_task():
         valasz_lehetosegek = input("válasz lehetőségek vesszővel elválasztva a helyes válasz után tegyél egy '$' jelet.\npl: egy, ketto$, harom\n>>>")
         valasz_lehetosegek_lista = valasz_lehetosegek.split(",")
         helyes_valasz_lista = []
-        self.egybe = valasz_lehetosegek.split(',')
+        
+        itt = list()
+        
+        for i in valasz_lehetosegek_lista:
+            if "$" in i:
+                print(itt)
+                itt.append(i[:-1])
+            else:
+                print(itt)
+                itt.append(i)
+        self.egybe[kerdes] = itt
+        print(self.egybe)
+        
                 
         for lehetoseg in valasz_lehetosegek_lista:
             if lehetoseg[-1] == "$":
                 helyes_valasz_lista.append(lehetoseg[:-1])
                 valasz_lehetosegek_lista.remove(lehetoseg)
         
-        print(self.egybe)
         print(valasz_lehetosegek_lista)
         print(helyes_valasz_lista)
         self.kerdes_valasz.append({kerdes: [[valasz_lehetosegek_lista], [helyes_valasz_lista]]})
@@ -70,7 +81,7 @@ def main():
     a = "tempalaryx.docx"
     b = input("Mi legyen a feladatsor neve?: ")
     c = input("Mi legyen a feladatsor leírása?: ")
-    Create_task(file_name=a, file_desc=c, kerdes_valasz=[], feladatsor_neve=b, egybe=[]).chose()
+    Create_task(file_name=a, file_desc=c, kerdes_valasz=[], feladatsor_neve=b, egybe={}).chose()
    
 
 
