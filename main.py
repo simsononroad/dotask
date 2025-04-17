@@ -4,26 +4,25 @@ import os
 import subprocess
 
 class Create_task():
-    def __init__(self, file_name, file_desc, kerdes_valasz: list, feladatsor_neve):
+    def __init__(self, file_name, file_desc, kerdes_valasz: list, feladatsor_neve, egybe):
        self.file_name = file_name
        self.file_desc = file_desc
        self.kerdes_valasz = list(kerdes_valasz)
        self.feladatsor_neve = feladatsor_neve
+       self.egybe = list(egybe)
     def chose(self):
         
         a = input("(Ú)j kérdés, (G)enerálás, (K)ilépés")
         print()
         if a.upper() == 'Ú':
-            Create_task(self.file_name, self.file_desc, self.kerdes_valasz, self.feladatsor_neve).new_task()
+            Create_task(self.file_name, self.file_desc, self.kerdes_valasz, self.feladatsor_neve, egybe=self.egybe).new_task()
         elif a.upper() == 'G':
-            Create_task(self.file_name, self.file_desc, self.kerdes_valasz, self.feladatsor_neve).gen_file()
+            Create_task(self.file_name, self.file_desc, self.kerdes_valasz, self.feladatsor_neve, egybe=self.egybe).gen_file()
         else:exit()
-    egybe = []
     def gen_file(self):
         
         
         print(f"==================\n\tFájl neve: {self.file_name}\n\tFájl leírása: {self.file_desc}\n==================\n")
-        print(egybe)
         doc = DocxTemplate('base.docx')
         context = {
             'feladat_neve': self.feladatsor_neve,
@@ -39,41 +38,39 @@ class Create_task():
             'feladat_neve': self.feladatsor_neve,
             'feladatsor_leirasa': self.file_desc,
             'feladat_szam': 0,
-            'kerdes_valasz': egybe
+            'kerdes_valasz': self.egybe
         }
         doc1.render(context)
         doc1.save(self.file_name)
         docx_2_pdf(self.file_name, "feladatsor.pdf")
                 
     def new_task(self):
-        global egybe
         kerdes = input("Mi legyen a kérdés?\n>>>")
         valasz_lehetosegek = input("válasz lehetőségek vesszővel elválasztva a helyes válasz után tegyél egy '$' jelet.\npl: egy, ketto$, harom\n>>>")
         valasz_lehetosegek_lista = valasz_lehetosegek.split(",")
         helyes_valasz_lista = []
-        egybe = valasz_lehetosegek.split(",")
+        self.egybe = valasz_lehetosegek.split(',')
+                
         for lehetoseg in valasz_lehetosegek_lista:
             if lehetoseg[-1] == "$":
                 helyes_valasz_lista.append(lehetoseg[:-1])
                 valasz_lehetosegek_lista.remove(lehetoseg)
         
-        print(egybe)
+        print(self.egybe)
         print(valasz_lehetosegek_lista)
         print(helyes_valasz_lista)
         self.kerdes_valasz.append({kerdes: [[valasz_lehetosegek_lista], [helyes_valasz_lista]]})
         print(self.kerdes_valasz)
-        Create_task(file_name=self.file_name, file_desc=self.file_desc, kerdes_valasz=self.kerdes_valasz, feladatsor_neve=self.feladatsor_neve).chose()
+        Create_task(file_name=self.file_name, file_desc=self.file_desc, kerdes_valasz=self.kerdes_valasz, feladatsor_neve=self.feladatsor_neve, egybe=self.egybe).chose()
         
         
             
 
 def main():
-    a = input("Mi legyen a file neve?: ")
-    if '.docx' not in a:
-        a = f'{a}.docx'
+    a = "tempalaryx.docx"
     b = input("Mi legyen a feladatsor neve?: ")
     c = input("Mi legyen a feladatsor leírása?: ")
-    Create_task(file_name=a, file_desc=c, kerdes_valasz=[], feladatsor_neve=b).chose()
+    Create_task(file_name=a, file_desc=c, kerdes_valasz=[], feladatsor_neve=b, egybe=[]).chose()
    
 
 
